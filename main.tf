@@ -29,7 +29,7 @@ resource "aws_acm_certificate" "wildcard" {
     create_before_destroy = true
   }
 }
-/*
+
 resource "aws_route53_record" "cert_validation" {
   # zone_id = data.aws_route53_zone.main.id
   # name    = tolist(aws_acm_certificate.main.domain_validation_options)[0].resource_record_name
@@ -73,5 +73,3 @@ resource "aws_acm_certificate_validation" "wildcard" {
   # ]
   validation_record_fqdns = [for record in aws_route53_record.cert_validation: record.fqdn]
 }
-
-*/
