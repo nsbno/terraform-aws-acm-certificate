@@ -1,27 +1,30 @@
 terraform {
-  required_version = ">= 0.12"
-
-  backend "s3" {
-    key            = "terraform-modules/development/terraform-aws-acm-certificate/default.tfstate"
-    bucket         = "<test-account-id>-terraform-state"
-    dynamodb_table = "<test-account-id>-terraform-state"
-    acl            = "bucket-owner-full-control"
-    encrypt        = "true"
-    kms_key_id     = "<kms-key-id>"
-    region         = "eu-west-1"
-  }
+  required_version = ">= 0.14"
 }
 
 provider "aws" {
-  version             = ">= 2.20"
-  region              = "eu-west-1"
-  allowed_account_ids = ["<test-account-id>"]
+  region = "eu-west-1"
 }
 
 module "certificate" {
   source           = "../../"
   hosted_zone_name = "<route53-zone-name>"
-  certificate_name = "default-test.<route53-zone-name>"
+  domain_name      = "default-test.<route53-zone-name>"
+
+
+  tags = {
+    environment = "dev"
+    terraform   = "True"
+  }
+}
+
+module "certificate_with_sans" {
+  source                    = "../../"
+  hosted_zone_name          = "<route53-zone-name>"
+  domain_name               = "default-test-1.<route53-zone-name>"
+  subject_alternative_names = ["default-test-2.<route53-zone-name>", "default-test-3.<route53-zone-name>"]
+
+
 
   tags = {
     environment = "dev"
@@ -31,4 +34,8 @@ module "certificate" {
 
 output "certificate_arn" {
   value = module.certificate.arn
+}
+
+output "certificate_with_sans_arn" {
+  value = module.certificate_with_sans.arn
 }

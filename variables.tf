@@ -6,9 +6,15 @@ variable "hosted_zone_name" {
   type        = string
 }
 
-variable "certificate_name" {
+variable "domain_name" {
   description = "The certificate you are requesting (must be valid for the hosted zone)"
   type        = string
+}
+
+variable "subject_alternative_names" {
+  description = "(Optional) Set of domains that should be SANs in the issued certificate."
+  type        = list(string)
+  default     = []
 }
 
 variable "create_wildcard" {
