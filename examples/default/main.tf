@@ -6,6 +6,11 @@ provider "aws" {
   region = "eu-west-1"
 }
 
+provider "aws" {
+  region = "us-east-1"
+  alias  = "use1"
+}
+
 module "certificate" {
   source           = "../../"
   hosted_zone_name = "<route53-zone-name>"
@@ -31,6 +36,23 @@ module "certificate_with_sans" {
     terraform   = "True"
   }
 }
+
+module "certificate_in_different_region_from_default" {
+  source = "../../"
+  providers = {
+    aws = aws.use1
+  }
+
+  hosted_zone_name          = "<route53-zone-name>"
+  domain_name               = "default-test-1.<route53-zone-name>"
+  subject_alternative_names = ["default-test-2.<route53-zone-name>", "default-test-3.<route53-zone-name>"]
+
+  tags = {
+    environment = "dev"
+    terraform   = "True"
+  }
+}
+
 
 output "certificate_arn" {
   value = module.certificate.arn
