@@ -1,9 +1,17 @@
 # ACM Certificate Module
 
-[![Build Status](https://travis-ci.com/telia-oss/terraform-aws-acm-certificate.svg?branch=master)](https://travis-ci.com/telia-oss/terraform-aws-acm-certificate)
-
 Use this module for creating and validating an ACM certificate. Bear in mind  that the validation does not represent a real-world 
 entity in AWS, therefore changing or deleting it on its own has no immediate effect.
+
+## Usage
+
+```[source, hcl]
+module "certificate" {
+  source           = "github.com/nsbno/terraform-aws-acm-certificate?ref=x.y.z"
+  hosted_zone_name = "<route53-zone-name>"
+  domain_name      = "<env>.<route53-zone-name>"
+}
+```
 
 ## Examples
 
@@ -24,7 +32,6 @@ Do not request a certificate that includes a wildcard and select create_wildcard
 To serve a site at the top of your domain  (e.g. https://example.com) you will need to request a certificate with the same 
 name as hosted zone. You may also want to read here for how to set the DNS record -  
 https://aws.amazon.com/premiumsupport/knowledge-center/route-53-create-alias-records/
-
 
 
 ## Authors
