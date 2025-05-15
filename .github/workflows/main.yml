@@ -8,11 +8,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: HashiCorp - Setup Terraform
-        uses: hashicorp/setup-terraform@v1.2.1
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 0.14.10
-      - name: Install Taskfile
-        run: curl -sL https://taskfile.dev/install.sh | sh
-      - name: Run tests
-        run: ./bin/task test
+          terraform_wrapper: false
+
+      - name: Terraform Init
+        id: init
+        run: terraform init -input=false
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
