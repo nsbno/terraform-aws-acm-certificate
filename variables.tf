@@ -35,3 +35,9 @@ variable "wait_for_validation" {
   default     = true
 }
 
+variable "region" {
+  type        = string
+  description = "The AWS region where the certificate should be created. Specify: 'us-east-1' for CloudFront"
+  nullable    = true
+  default     = null
+}
